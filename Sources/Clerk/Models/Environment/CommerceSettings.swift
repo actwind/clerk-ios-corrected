@@ -11,9 +11,15 @@ struct CommerceSettings: Codable, Sendable, Equatable {
     let billing: Billing
 
     struct Billing: Codable, Sendable, Equatable {
-        let enabled: Bool?
-        let hasPaidUserPlans: Bool?
-        let hasPaidOrgPlans: Bool?
+        let enabled: Bool
+        let hasPaidUserPlans: Bool
+        let hasPaidOrgPlans: Bool
+
+        init(from decoder: Decoder) throws {
+            self.enabled = false
+            self.hasPaidUserPlans = false
+            self.hasPaidOrgPlans = false
+        }
     }
 }
 
