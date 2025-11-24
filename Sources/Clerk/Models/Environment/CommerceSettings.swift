@@ -15,6 +15,12 @@ struct CommerceSettings: Codable, Sendable, Equatable {
         let hasPaidUserPlans: Bool
         let hasPaidOrgPlans: Bool
 
+        enum CodingKeys: String, CodingKey {
+            case enabled
+            case hasPaidUserPlans
+            case hasPaidOrgPlans
+        }
+
         init(enabled: Bool, hasPaidUserPlans: Bool, hasPaidOrgPlans: Bool) {
             self.enabled = enabled
             self.hasPaidUserPlans = hasPaidUserPlans
@@ -22,9 +28,10 @@ struct CommerceSettings: Codable, Sendable, Equatable {
         }
 
         init(from decoder: Decoder) throws {
-            self.enabled = false
-            self.hasPaidUserPlans = false
-            self.hasPaidOrgPlans = false
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.enabled = try container.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
+            self.hasPaidUserPlans = try container.decodeIfPresent(Bool.self, forKey: .hasPaidUserPlans) ?? false
+            self.hasPaidOrgPlans = try container.decodeIfPresent(Bool.self, forKey: .hasPaidOrgPlans) ?? false
         }
     }
 }
